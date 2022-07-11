@@ -208,7 +208,11 @@ async function createFirewallCluster(props: {
     name: `${firewallName}-asg`,
     suffixLength: 0,
   });
-  const subnetIds = vpc.findSubnetIdsByName(subnetName);
+  var subnetIds =[] // JT2022 Switch from a subnet string to a list of subnets to allow for multiple aubnet attachements to a ASG
+  for (var subnet of subnetName) {
+    subnetIds.push(vpc.findSubnetIdsByName(subnetName));
+  }
+  //const subnetIds = vpc.findSubnetIdsByName(subnetName);
   const autoScaleTags: elb.CfnAutoScalingGroup.TagPropertyProperty[] = [];
   /* eslint-disable no-template-curly-in-string */
   for (const [key, value] of Object.entries(tags || {})) {
