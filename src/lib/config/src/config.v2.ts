@@ -627,7 +627,7 @@ export const FirewallAutoScaleConfigType = t.interface({
   'image-id': t.nonEmptyString,
   region: t.nonEmptyString,
   vpc: t.nonEmptyString,
-  subnet: t.Either(t.nonEmptyString, t.array(t.string)), // JT2022 - Changed to either array or string to allow for multiple eni attachments
+  subnet: t.array(t.string), // JT2022 - Changed to either array or string to allow for multiple eni attachments
   'security-group': t.nonEmptyString,
   'fw-instance-role': t.optional(t.string),
   'user-data': t.optional(t.string),
