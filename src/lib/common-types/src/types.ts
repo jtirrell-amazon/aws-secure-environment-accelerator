@@ -17,7 +17,7 @@ import * as t from 'io-ts';
 import { either } from 'fp-ts/lib/Either';
 import { IPv4CidrRange } from 'ip-num';
 
-export type { Any, AnyProps, Mixed, Props, TypeC, TypeOf, Either } from 'io-ts';
+export type { Any, AnyProps, Mixed, Props, TypeC, TypeOf } from 'io-ts';
 export {
   array,
   Array,
