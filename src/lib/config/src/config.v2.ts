@@ -436,7 +436,6 @@ export const MadConfigType = t.interface({
   restrict_srcips: t.array(t.cidr),
   'rdgw-instance-type': t.nonEmptyString,
   'rdgw-instance-role': t.nonEmptyString,
-  'rdgw-enforce-imdsv2': t.defaulted(t.boolean, false),
   'num-rdgw-hosts': t.number,
   'rdgw-max-instance-age': t.number,
   'min-rdgw-hosts': t.number,
@@ -471,10 +470,8 @@ export const RsyslogConfig = t.interface({
   'ssm-image-id': t.nonEmptyString,
   'rsyslog-instance-type': t.nonEmptyString,
   'rsyslog-instance-role': t.nonEmptyString,
-  'rsyslog-enforce-imdsv2': t.defaulted(t.boolean, false),
   'rsyslog-root-volume-size': t.number,
   'rsyslog-max-instance-age': t.number,
-  'user-data': t.optional(t.nonEmptyString),
 });
 
 export type RsyslogConfig = t.TypeOf<typeof RsyslogConfig>;
@@ -588,7 +585,6 @@ export const FirewallEC2ConfigType = t.interface({
   name: t.nonEmptyString,
   'instance-sizes': t.nonEmptyString,
   'image-id': t.nonEmptyString,
-  'enforce-imdsv2': t.defaulted(t.boolean, false),
   region: t.nonEmptyString,
   vpc: t.nonEmptyString,
   'security-group': t.nonEmptyString,
@@ -631,9 +627,8 @@ export const FirewallAutoScaleConfigType = t.interface({
   'image-id': t.nonEmptyString,
   region: t.nonEmptyString,
   vpc: t.nonEmptyString,
-  subnet: t.nonEmptyString,
+  subnet: t.either(t.nonEmptyString, t.array(t.string)), // JT2022 - Changed to either array or string to allow for multiple eni attachments
   'security-group': t.nonEmptyString,
-  'enforce-imdsv2': t.defaulted(t.boolean, false),
   'fw-instance-role': t.optional(t.string),
   'user-data': t.optional(t.string),
   bootstrap: t.optional(t.nonEmptyString),
@@ -657,7 +652,6 @@ export const FirewallManagerConfigType = t.interface({
   name: t.nonEmptyString,
   'instance-sizes': t.nonEmptyString,
   'image-id': t.nonEmptyString,
-  'enforce-imdsv2': t.defaulted(t.boolean, false),
   region: t.nonEmptyString,
   vpc: t.nonEmptyString,
   'security-group': t.nonEmptyString,
@@ -754,13 +748,6 @@ export const SecretConfig = t.interface({
   size: t.number,
 });
 
-export const S3LogPartitionType = t.interface({
-  logGroupPattern: t.nonEmptyString,
-  s3Prefix: t.nonEmptyString,
-});
-
-export type S3LogPartition = t.TypeOf<typeof S3LogPartitionType>;
-
 export const MandatoryAccountConfigType = t.interface({
   'gui-perm': t.optional(t.boolean),
   'account-name': t.nonEmptyString,
@@ -786,7 +773,6 @@ export const MandatoryAccountConfigType = t.interface({
   'keep-default-vpc-regions': t.defaulted(t.array(t.nonEmptyString), []),
   'populate-all-elbs-in-param-store': t.defaulted(t.boolean, false),
   'ssm-automation': t.defaulted(t.array(SsmShareAutomation), []),
-  'ssm-inventory-collection': t.optional(t.boolean),
   'aws-config': t.defaulted(t.array(AwsConfigAccountConfig), []),
   scps: t.optional(t.array(t.nonEmptyString)),
   'opt-in-vpcs': t.optional(t.array(t.nonEmptyString)),
@@ -815,7 +801,6 @@ export const OrganizationalUnitConfigType = t.interface({
   'default-budgets': t.optional(BudgetConfigType),
   'ssm-automation': t.defaulted(t.array(SsmShareAutomation), []),
   'aws-config': t.defaulted(t.array(AwsConfigRules), []),
-  'ssm-inventory-collection': t.optional(t.boolean),
 });
 
 export type OrganizationalUnitConfig = t.TypeOf<typeof OrganizationalUnitConfigType>;
@@ -909,7 +894,6 @@ export const CentralServicesConfigType = t.interface({
   'fw-mgr-alert-level': t.defaulted(FirewallManagerAlertLevelType, 'Medium'),
   'security-hub-findings-sns': t.defaulted(SecurityHubFindingsSnsType, 'None'),
   'config-aggr': t.defaulted(t.boolean, false),
-  'dynamic-s3-log-partitioning': t.optional(t.array(S3LogPartitionType)),
 });
 
 export type CentralServicesConfig = t.TypeOf<typeof CentralServicesConfigType>;
