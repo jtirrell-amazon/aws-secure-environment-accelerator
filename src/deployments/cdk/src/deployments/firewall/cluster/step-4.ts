@@ -212,7 +212,7 @@ async function createFirewallCluster(props: {
   });
   var subnetIds = [] // JT2022 Switch from a subnet string to a list of subnets to allow for multiple aubnet attachements to a ASG
   for (var subnet of subnetName) {
-    subnetIds.push(vpc.findSubnetIdsByName(subnetName));
+    subnetIds.push(vpc.findSubnetIdsByName(subnet));
   }
   //const subnetIds = vpc.findSubnetIdsByName(subnetName);
   const autoScaleTags: elb.CfnAutoScalingGroup.TagPropertyProperty[] = [];
